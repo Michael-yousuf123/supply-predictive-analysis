@@ -1,10 +1,15 @@
 import os
+from decouple import config
+from dotenv import load_dotenv
 import numpy as np
 import pandas as pd
 from sklearn import model_selection
 
-INPUTPATH = os.environ.get("INPUTPATH")
-OUTPUTPATH = os.environ.get("OUTPUTPATH")
+# INPUTPATH = config('INPUT')
+# OUTPUTPATH = config('OUTPUT')
+
+INPUTPATH = os.environ.get("INPUT")
+OUTPUTPATH = os.environ.get("OUTPUT")
 
 def cross_fold(data: str=None, K: int=None):
     """
@@ -29,7 +34,10 @@ def cross_fold(data: str=None, K: int=None):
     df = data.to_csv(f"{outpath}/{outfile}")
     return df
 if __name__ == '__main__':
-    df = pd.read_csv(f"{INPUTPATH}/model.csv") 
+    load_dotenv()
+    print(os.getenv('INPUTPATH'))
+    df = pd.read_csv(INPUTPATH)
+    #df = pd.read_csv(f"{INPUTPATH}/model.csv") 
     X = df.drop(columns=['estimated_stock_pct'])
     y = df['estimated_stock_pct']
     # create folds
